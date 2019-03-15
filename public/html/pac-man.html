@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>Pac-Man</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href="stylesheets/main.css" rel="stylesheet">
     <style>
         html {
             height: 100%;
@@ -119,6 +120,17 @@
 
     </div>
 
+    <div id="registration">
+
+        <h1>Register</h1>
+
+        <div class="data-label">Your Name</div>
+
+        <input type="text" id="user-name"><br>
+
+        <button id="register-button" class="myButton">Register</button>
+    </div>
+
     <audio src="/sounds/coin.mp3" preload="auto" id="coinSound"></audio>
     <audio src="/sounds/portal.mp3" preload="auto" id="portalSound"></audio>
     <audio src="/sounds/die.mp3" preload="auto" id="dieSound"></audio>
@@ -138,6 +150,7 @@
     </div>
     <canvas id="gameCanvas"></canvas>
     <script src="/javascript/jquery-2.1.3.min.js"></script>
+    <script src="/javascript/game-registration.js"></script>
     <script src="/javascript/hammer.min.js"></script>
     <script src="/javascript/GameArgs.js"></script>
     <script src="/javascript/GameGrid.js"></script>

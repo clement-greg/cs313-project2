@@ -454,6 +454,8 @@
         backgroundLoaded = true;
     }
 
+    window.resetGame = resetGame;
+
     $(document).keydown(function (event) {
         switch (event.which) {
             case 39:        //Right key
@@ -469,7 +471,7 @@
                 p.goDown();
                 break;
             case 77:
-                document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout');
+               // document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout');
                 break;
             default:
                 console.log(event.which);
@@ -494,8 +496,9 @@
     });
 
     hammertime.on('tap', function (evt) {
-        if (!playingGame)
-            resetGame();
+        // if (!playingGame)
+        //     resetGame();
+        // TODO: start the game.
     });
 
 
@@ -503,7 +506,7 @@
         switch (event.which) {
             case 32:        //The space-bar
                 if (!playingGame) {
-                    resetGame();
+                    // resetGame();
                 }
                 break;
         }
@@ -578,7 +581,7 @@
         }
 
         if (gp.buttons[2] && gp.buttons[2].pressed) {
-            document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout');
+           // document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout');
         }
     }
 
@@ -617,7 +620,7 @@
                     if (numberOfLives < 0) {
                         setTimeout(function () {
                             parent.postMessage('/cycle-wave', '*');
-                            document.location.href = '/Games/HighScore?game=PacMan&score=' + score;
+                            // document.location.href = '/Games/HighScore?game=PacMan&score=' + score;
                         }, 3000);
                         playingGame = false;
                     }
@@ -734,7 +737,12 @@
 
 
     soundFx.playBgMusic();
+
+    return {
+        reset: resetGame
+    };
 };
+
 
 function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -749,7 +757,10 @@ function getParameterByName(name) {
 var startGameDate = new Date();
 if (getParameterByName('timeout')) {
     setTimeout(function () {
-        document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout')
+       // document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout')
+
+       // TODO: reset the game
+       console.log('Reset the game');
 
     }, getParameterByName('timeout'));
     setInterval(function () {
@@ -773,5 +784,6 @@ if (getParameterByName('timeout')) {
             document.getElementById('time-counter').innerHTML = minutes + ':' + secondsString;
         }
     }, 200);
+
 
 }
