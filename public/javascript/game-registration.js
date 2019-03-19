@@ -31,8 +31,9 @@ document.getElementById('register-button').addEventListener('click', function ()
         }));
         if (results.player_2 === player.id) {
             document.getElementById('registration').remove();
-            window.resetGame();
+            //window.resetGame();
             // document.getElementById('splash-screen').remove();
+            countDown();
         } else {
             showWaitingForOpponent();
         }
@@ -70,13 +71,18 @@ function startWebSocket() {
 
         try {
             var messageObj = JSON.parse(event.data);
+            console.log(messageObj);
             if (messageObj.eventType === 'opponent-found') {
                 document.getElementById('registration').remove();
-                window.resetGame();
-                // document.getElementById('splash-screen').remove();
+                countDown();
 
             } else if (messageObj.eventType === 'game-activity') {
                 window.showOtherPlayerGameEvent(messageObj);
+            } else if (messageObj.eventType === 'play') {
+                document.getElementById('registration').remove();
+                window.resetGame();
+            } else if (messageObj.eventType === 'countdown') {
+                console.log(messageObj.data);
             }
         } catch (e) {}
     }
@@ -99,6 +105,32 @@ function startWebSocket() {
 }
 
 startWebSocket();
+
+function countDown() {
+    document.getElementById('count-3').style.display = 'inline';
+    document.getElementById('count-3').classList.add('expand');
+    setTimeout(function () {
+        document.getElementById('count-3').style.display = 'none';
+        document.getElementById('count-2').style.display = 'inline';
+        document.getElementById('count-2').classList.add('expand');
+    }, 1000);
+    setTimeout(function () {
+        document.getElementById('count-2').style.display = 'none';
+        document.getElementById('count-1').style.display = 'inline';
+        document.getElementById('count-1').classList.add('expand');
+    }, 2000);
+    setTimeout(function () {
+        document.getElementById('count-1').style.display = 'none';
+        document.getElementById('play').style.display = 'inline';
+        document.getElementById('play').classList.add('expand');
+        window.resetGame();
+        document.getElementById('scoreBox').style.display = 'block';
+        document.getElementById('time-box').style.display = 'block';
+    }, 3000);
+    setTimeout(function () {
+        document.getElementById('play').style.display = 'none';
+    }, 4000);
+}
 
 
 function apiService() {

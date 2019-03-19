@@ -7,97 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <link href="stylesheets/main.css" rel="stylesheet">
     <style>
-        html {
-            height: 100%;
-            overflow: hidden;
 
-        }
-        body {
-            font-family: 'Roboto';
-            background: black;
-            color: #fff;
-            height: 100%;
-        }
-
-
-
-
-        body {
-            background-color: #000;
-            overflow: hidden;
-            height: 100%;
-        }
-
-        #splash-screen {
-            background-image: url(/images/pack-man-splash.png);
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            z-index: 1;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-color: #000;
-            animation-name: pan-out;
-            animation-duration: 10s;
-            animation-timing-function: linear;
-            background-size: contain;
-            transform: scale(1.1) translateX(-2000px);
-        }
-
-
-        @font-face {
-            font-family: gameFont;
-            src: url(/fonts/gomarice_game_continue_03.ttf);
-        }
-
-        h1 {
-            font-family: gameFont;
-            text-align: right;
-        }
-
-        #gameCanvas {
-            height: 800px;
-            margin: 20px;
-            width: 800px;
-            background-color: rgba(0,0,0,1);
-            /*border: 2px solid #808080;*/
-            display: table;
-            margin: 0 auto;
-            margin-top: 30px;
-            padding: 2px;
-            /*background-image: url('/images/pac-man-game-board.svg');*/
-        }
-
-        #scoreBox {
-            position: absolute;
-            width: 250px;
-            box-shadow: 0px 0px 10px 0px #031f03;
-            padding: 10px;
-            border: 1px solid rgba(0,0,0,.1);
-            border-radius: 5px;
-        }
-
-        #scoreTitle {
-            border-bottom: 1px solid rgba(0,0,0,.1);
-            font-size: 24px;
-        }
-
-        #livesCanvas {
-            width: 250px;
-            height: 100px;
-        }
-        #time-counter {
-            font-size: 44px;
-            border-radius: 5px;
-            background-color: rgba(0,0,0,.3);
-            color: #fff;
-            padding: 20px;
-            display: inline-block;
-            position: absolute;
-            top: 300px;
-            width: 230px;
-            box-shadow: 0px 0px 10px 0px #031f03;
-        }
     </style>
 </head>
 
@@ -105,17 +15,31 @@
     <!-- <div id="splash-screen">
 
     </div> -->
+    <h1 class="countdown-text" id="count-3">3</h1>
+    <h1 class="countdown-text" id="count-2">2</h1>
+    <h1 class="countdown-text" id="count-1">1</h1>
+    <h1 class="countdown-text" id="play">Play</h1>
 
     <div id="registration">
 
         <div id="registration-step">
-            <h1>Register</h1>
+            <div class="flex-container">
+                <div class="flex-none">
+                        <img src="/images/pac-man.svg" id="pac-main-reg-img">
+                </div>
+                <div class="left-margin-20"><h1 class="pac-font">Pac-Man Battle</h1></div>
+            </div>
+            
+            
+
 
             <div class="data-label">Your Name</div>
 
             <input type="text" id="user-name"><br>
 
             <button id="register-button" class="myButton">Register</button>
+
+            
         </div>
 
         <div id="waiting-step">
@@ -136,20 +60,55 @@
     <audio src="/sounds/bg-music.mp3" preload="auto" loop="loop" id="bgMusic"></audio>
 
 
-    <div id="time-counter"></div>
-    <div id="scoreBox">
-        <div id="scoreTitle">Score</div>
-        <h1 id="score">0</h1>
-
-        <canvas id="livesCanvas"></canvas>
-
-        <div id="otherPlayer">Your Opponent</div>
-        <h1 id="other-score">0</h1>
-        <canvas id="otherLivesCanvas"></canvas>
 
 
+    <div class="flex-container" id="main-game-board">
+        <div>
+            <div id="scoreBox">
+                <h3 id="scoreTitle">Score</h3>
+                <h1 id="score">0</h1>
+
+                <canvas id="livesCanvas"></canvas>
+
+                <h3 id="otherPlayer">Your Opponent</h3>
+                <h1 id="other-score">0</h1>
+
+                <canvas id="otherLivesCanvas"></canvas>
+
+
+
+
+            </div>
+        </div>
+        <div class="flex-none" style="width: 800px">
+
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        <div>
+
+            <div id="time-box">
+                <h3>Time Remaining</h3>
+                <h1 id="time-remaining"></h1>
+            </div>
+        </div>
     </div>
-    <canvas id="gameCanvas"></canvas>
+
+    <div id="game-over-display">
+        <h1>Game Over</h1>
+
+        <div id="you-win-panel" class="hide-by-default">
+            You Win!
+        </div>
+
+        <div id="you-tied-panel" class="hide-by-default">
+            Looks like you tied!  Better have a rematch.
+        </div>
+
+        <div id="you-lose-panel" class="hide-by-default">
+            Sorry, you lost.  Better luck next time.
+        </div>
+    </div>
+
     <script src="/javascript/jquery-2.1.3.min.js"></script>
     <script src="/javascript/game-registration.js"></script>
     <script src="/javascript/hammer.min.js"></script>
@@ -164,6 +123,7 @@
     <script src="/javascript/Sounds.js"></script>
     <script src="/javascript/PacMan.js"></script>
     <script src="/javascript/Game.js"></script>
+    <script src="/javascript/game-over.js"></script>
 </body>
 
 </html>

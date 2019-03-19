@@ -5,13 +5,15 @@
     ctx.strokeStyle = "#ffffff";
     var p = new pacMan(ctx);
     var numberOfLives = 3;
+    var gameOver = false;
     var numOfOtherLives = 3;
     var ghostSpeed = 2;
     var imgBackground = new Image();
     var backgroundLoaded = false;
-    var gameDuration = 1;
+    var gameDuration = .5;
     var gameTime = new Date();
-    gameTime.setMinutes(gameTime.getMinutes() + gameDuration);
+    var gameOverShown = false;
+    gameTime.setSeconds(gameTime.setSeconds() + gameDuration * 60);
     imgBackground.onload = function () {
         backgroundLoaded = true;
     };
@@ -1413,8 +1415,11 @@
         p.reset();
         backgroundLoaded = true;
         gameTime = new Date();
-        gameTime.setMinutes(gameTime.getMinutes() + gameDuration);
+        gameTime.setSeconds(gameTime.getSeconds() + gameDuration * 60);
         console.log(gameTime);
+        soundFx.playBgMusic();
+        gameOver = false;
+        gameOverShown = false;
     }
 
     window.resetGame = resetGame;
@@ -1567,9 +1572,15 @@
     var powerUpInterval = null;
 
     function advance() {
-        if(new Date() > gameTime) {
+        if (new Date() > gameTime) {
             // Game is over
             playingGame = false;
+            soundFx.pauseBgMusic();
+            gameOver = true;
+            if(!gameOverShown) {
+                gameOverShown = true;
+                gameOverController();
+            }
         }
         rectanglesToClear.push({
             x: p.point.x - 22,
@@ -1688,6 +1699,33 @@
 
     var rectanglesToClear = [];
 
+    function displayTimeRemaining() {
+        if(gameOver) {
+            return;
+        }
+        var now = new Date();
+        let secondsLeft = (gameTime.getTime() - now.getTime()) / 1000;
+        var under60 = secondsLeft < 60;
+
+        const minutes = Math.floor(secondsLeft / 60);
+        secondsLeft = Math.floor(secondsLeft - (minutes * 60));
+        if (secondsLeft < 0) {
+            secondsLeft = 0;
+        }
+
+        if (under60 && secondsLeft > 0) {
+            document.getElementById('time-remaining').classList.add('blink');
+        } else {
+            document.getElementById('time-remaining').classList.remove('blink');
+        }
+
+        let secondsLeftString = secondsLeft.toString();
+        if (secondsLeftString.length === 1) {
+            secondsLeftString = '0' + secondsLeft;
+        }
+        document.getElementById('time-remaining').innerText = minutes.toString() + ':' + secondsLeftString;
+    }
+
     function draw() {
         var otherLivesCanvas = document.getElementById('otherLivesCanvas');
         otherLivesCanvas.width = 250;
@@ -1703,6 +1741,8 @@
 
                 livePac.draw();
             }
+
+            displayTimeRemaining();
             return;
         }
         for (var i = 0; i < rectanglesToClear.length; i++) {
@@ -1763,10 +1803,12 @@
         }
 
         rectanglesToClear = [];
+
+        displayTimeRemaining();
     }
 
 
-    soundFx.playBgMusic();
+    // soundFx.playBgMusic();
 
     return {
         reset: resetGame,
@@ -1810,9 +1852,7 @@ if (getParameterByName('timeout')) {
         if (secondsString.length == 1)
             secondsString = '0' + secondsString;
 
-        if (document.getElementById('time-counter')) {
-            document.getElementById('time-counter').innerHTML = minutes + ':' + secondsString;
-        }
+
     }, 200);
 
 

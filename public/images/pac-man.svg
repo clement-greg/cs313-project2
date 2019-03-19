@@ -1,0 +1,54 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="336.86" height="358" viewBox="0 0 336.86 358">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#radial-gradient);
+      }
+
+      .cls-2 {
+        fill: #fbb03b;
+      }
+
+      .cls-3 {
+        fill: url(#radial-gradient-2);
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="323.34" cy="355" r="173.25" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="0.09" stop-color="#fff8d8"/>
+      <stop offset="0.21" stop-color="#fff0a7"/>
+      <stop offset="0.33" stop-color="#ffe97d"/>
+      <stop offset="0.46" stop-color="#ffe35b"/>
+      <stop offset="0.59" stop-color="#ffdf40"/>
+      <stop offset="0.72" stop-color="#ffdc2d"/>
+      <stop offset="0.86" stop-color="#ffda22"/>
+      <stop offset="1" stop-color="#ffd91e"/>
+    </radialGradient>
+    <radialGradient id="radial-gradient-2" cx="410.88" cy="265.02" r="25.5" gradientTransform="translate(-66.27 -161.45) scale(0.76 0.94)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="0.02" stop-color="#f4f5f6"/>
+      <stop offset="0.14" stop-color="#bcc0c7"/>
+      <stop offset="0.25" stop-color="#8a929d"/>
+      <stop offset="0.37" stop-color="#5f6b7a"/>
+      <stop offset="0.49" stop-color="#3d4b5d"/>
+      <stop offset="0.61" stop-color="#223246"/>
+      <stop offset="0.74" stop-color="#0f2037"/>
+      <stop offset="0.87" stop-color="#04152d"/>
+      <stop offset="1" stop-color="#00122a"/>
+    </radialGradient>
+  </defs>
+  <title>pac-man</title>
+  <g>
+    <path class="cls-1" d="M334,533.5c-47.36,0-92.1-18.66-126-52.53S155.5,402.36,155.5,355,174.16,262.9,208,229s78.61-52.53,126-52.53a178.19,178.19,0,0,1,157.18,93.91L333,355l156.85,87.1A178.57,178.57,0,0,1,334,533.5Z" transform="translate(-155 -176)"/>
+    <path class="cls-2" d="M334,177a178.17,178.17,0,0,1,156.5,93.21l-157,83.91-1.62.86,1.6.89,155.62,86.41A178.1,178.1,0,0,1,334,533a175.12,175.12,0,0,1-69-14.08A180.36,180.36,0,0,1,170.08,424a176.11,176.11,0,0,1,0-138A180.36,180.36,0,0,1,265,191.08,175.12,175.12,0,0,1,334,177m0-1c-98.2,0-179,80.8-179,179s80.8,179,179,179a179.2,179.2,0,0,0,156.49-92.11L334,355l157.86-84.39A179.22,179.22,0,0,0,334,176Z" transform="translate(-155 -176)"/>
+  </g>
+  <g>
+    <ellipse class="cls-3" cx="245" cy="87.5" rx="24.5" ry="15"/>
+    <path d="M400,249c13.23,0,24,6.5,24,14.5S413.23,278,400,278s-24-6.5-24-14.5S386.77,249,400,249m0-1c-13.81,0-25,6.94-25,15.5S386.19,279,400,279s25-6.94,25-15.5S413.81,248,400,248Z" transform="translate(-155 -176)"/>
+  </g>
+  <circle class="cls-4" cx="245" cy="87" r="6"/>
+</svg>

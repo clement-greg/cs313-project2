@@ -1,3 +1,151 @@
+html {
+	height: 100%;
+	overflow: hidden;
+
+}
+body {
+	font-family: 'Roboto';
+	background: black;
+	color: #fff;
+	height: 100%;
+}
+
+
+
+
+body {
+	background-color: #000;
+	overflow: hidden;
+	height: 100%;
+}
+
+#splash-screen {
+	background-image: url(/images/pack-man-splash.png);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 1;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-color: #000;
+	animation-name: pan-out;
+	animation-duration: 10s;
+	animation-timing-function: linear;
+	background-size: contain;
+	transform: scale(1.1) translateX(-2000px);
+}
+
+
+@font-face {
+	font-family: gameFont;
+	src: url(/fonts/gomarice_game_continue_03.ttf);
+}
+
+@font-face {
+	font-family: pacman;
+	src: url(/fonts/pac.ttf);
+}
+
+@font-face {
+	font-family: atari;
+	src: url(/fonts/atari.ttf);
+}
+
+
+h1 {
+	font-family: atari;
+	font-size: 56px;
+    margin: 0;
+}
+
+h2, h3, h4 {
+	font-family: atari;
+	margin: 0;
+}
+
+.pac-font {
+	font-family: pacman;
+    line-height: 37px;
+    color: rgb(255, 217,32) !important;
+	text-shadow: 1px 1px 1px #082030;
+	font-size: 38px;
+	line-height: 47px;
+}
+
+.hide-by-default {
+	display: none;
+}
+
+#game-over-display {
+    display: none;
+    margin: 0 auto;
+    background-color: rgba(255,255,255,.1);
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+#gameCanvas {
+	height: 800px;
+	margin: 20px;
+	width: 800px;
+	background-color: rgba(0,0,0,1);
+	/*border: 2px solid #808080;*/
+	display: table;
+	margin: 0 auto;
+	margin-top: 30px;
+	padding: 2px;
+	/*background-image: url('/images/pac-man-game-board.svg');*/
+}
+
+.countdown-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: none;
+}
+
+#scoreBox {
+    box-shadow: 0px 0px 10px 0px #031f03;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 5px;
+    margin-left: 20px;
+    margin-right: 40px;
+    padding: 20px;
+    background-color: rgba(255,255,255,.2);
+    border: 1px solid blue;
+	margin-top: 29px;
+	display: none;
+}
+
+#time-box {
+	box-shadow: 0px 0px 10px 0px #031f03;
+    padding: 10px;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-left: 40px;
+    padding: 20px;
+    background-color: rgba(255,255,255,.2);
+    border: 1px solid blue;
+	margin-top: 29px;
+	display: none;
+}
+
+#scoreTitle {
+	border-bottom: 1px solid rgba(0,0,0,.1);
+	font-size: 24px;
+}
+
+#livesCanvas {
+	width: 250px;
+	height: 100px;
+}
+
 #registration {
   background-color: #fff;
   position: absolute;
@@ -9,6 +157,13 @@
   border: 3px solid #276873;
   border-radius: 7px;
   padding: 20px;
+}
+
+#pac-main-reg-img {
+    height: 95px;
+    display: table;
+    margin: 0 auto;
+    margin-bottom: 20px;
 }
 
 .data-label {
@@ -98,4 +253,61 @@ input {
 	100% {
 			transform: scale(1.1) translateX(-2000px);
 	}
+}
+
+@keyframes expand {
+	from {
+			transform: scale(1) ;
+			opacity: 1;
+	}
+
+	to {
+			transform: scale(10) ;
+			opacity: 0;
+	}
+}
+
+@keyframes blink {
+	from {
+		opacity: 1;
+
+	}
+	to {
+		opacity: .5;
+	}
+}
+
+.blink {
+	animation: blink .5s ease-out;
+	animation-iteration-count: infinite;
+}
+
+.expand {
+
+	animation: expand 1s ease-out;
+	transform-origin: 50% 50%;
+}
+
+.flex-container {
+	display: flex;
+}
+
+.flex-container>div {
+	flex: 1;
+}
+
+.flex-none {
+	flex: none !important;
+}
+
+.left-margin-20 {
+	margin-left: 20px;
+}
+
+.bottom-margin-20 {
+	margin-bottom: 20px;
+}
+
+.top-margin-20 {
+	margin-top: 20px;
 }
