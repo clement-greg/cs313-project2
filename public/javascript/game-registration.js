@@ -59,7 +59,12 @@ function sendGameEvent(description, score) {
 var webSocket = null;
 
 function startWebSocket() {
-    webSocket = new WebSocket("ws://" + document.location.host, "protocolOne");
+    if (document.location.protocol === 'https:') {
+
+        webSocket = new WebSocket("wss://" + document.location.host, "protocolOne");
+    } else {
+        webSocket = new WebSocket("ws://" + document.location.host, "protocolOne");
+    }
 
     webSocket.onmessage = function (event) {
 
