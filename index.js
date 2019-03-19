@@ -90,8 +90,6 @@ wss.on('connection', (ws) => {
     } catch (ex) {}
   });
   ws.on('close', req => {
-    console.log('close');
-    console.log(ws);
     delete connections[req.id];
     if (ws.matchId) {
       db.endMatch(ws.matchId, () => {});

@@ -9,6 +9,9 @@
     var ghostSpeed = 2;
     var imgBackground = new Image();
     var backgroundLoaded = false;
+    var gameDuration = 1;
+    var gameTime = new Date();
+    gameTime.setMinutes(gameTime.getMinutes() + gameDuration);
     imgBackground.onload = function () {
         backgroundLoaded = true;
     };
@@ -1409,16 +1412,18 @@
         ghostSpeed = 2;
         p.reset();
         backgroundLoaded = true;
+        gameTime = new Date();
+        gameTime.setMinutes(gameTime.getMinutes() + gameDuration);
+        console.log(gameTime);
     }
 
     window.resetGame = resetGame;
     window.showOtherPlayerGameEvent = function (eventArgs) {
-        console.log('inside game:');
-        console.log(eventArgs);
+
         if (eventArgs.score) {
             document.getElementById('other-score').innerText = eventArgs.score;
         }
-        if(eventArgs.description === 'Hit by Ghost') {
+        if (eventArgs.description === 'Hit by Ghost') {
             numOfOtherLives--;
         }
     }
@@ -1562,6 +1567,10 @@
     var powerUpInterval = null;
 
     function advance() {
+        if(new Date() > gameTime) {
+            // Game is over
+            playingGame = false;
+        }
         rectanglesToClear.push({
             x: p.point.x - 22,
             y: p.point.y - 22,
@@ -1611,6 +1620,7 @@
                             // document.location.href = '/Games/HighScore?game=PacMan&score=' + score;
                         }, 3000);
                         playingGame = false;
+                        sendGameEvent('Game Over', score);
                     }
 
                     soundFx.playDie();
@@ -1679,6 +1689,22 @@
     var rectanglesToClear = [];
 
     function draw() {
+        var otherLivesCanvas = document.getElementById('otherLivesCanvas');
+        otherLivesCanvas.width = 250;
+        otherLivesCanvas.height = 100;
+        if (!playingGame) {
+            var otherLivesCtx = otherLivesCanvas.getContext("2d");
+            for (var i = 0; i < numOfOtherLives; i++) {
+                var livePac = new pacMan(otherLivesCtx, 'gray');
+                livePac.point = {
+                    x: i * 60 + 25,
+                    y: 25
+                };
+
+                livePac.draw();
+            }
+            return;
+        }
         for (var i = 0; i < rectanglesToClear.length; i++) {
             var rect = rectanglesToClear[i];
             if (rect.x < 0)
@@ -1723,9 +1749,7 @@
             livePac.draw();
         }
 
-        var otherLivesCanvas = document.getElementById('otherLivesCanvas');
-        otherLivesCanvas.width = 250;
-        otherLivesCanvas.height = 100;
+
 
         var otherLivesCtx = otherLivesCanvas.getContext("2d");
         for (var i = 0; i < numOfOtherLives; i++) {
@@ -1766,7 +1790,7 @@ if (getParameterByName('timeout')) {
         // document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout')
 
         // TODO: reset the game
-        console.log('Reset the game');
+
 
     }, getParameterByName('timeout'));
     setInterval(function () {

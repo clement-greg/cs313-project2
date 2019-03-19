@@ -70,6 +70,12 @@ input {
 	top:1px;
 }
 
+.myButton:disabled {
+	background: rgba(0,0,0,.4);
+	cursor: default;
+	box-shadow: none;
+}
+
 #waiting-step {
 	display: none;
 	font-size: 36px;

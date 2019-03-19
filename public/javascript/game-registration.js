@@ -5,8 +5,6 @@ var player = {
 
 if (localStorage.getItem('player-info')) {
     try {
-
-        console.log('getting player info');
         player = JSON.parse(localStorage.getItem('player-info'));
         document.getElementById('user-name').value = player.name;
     } catch (e) {}
@@ -20,15 +18,12 @@ document.getElementById('register-button').addEventListener('click', function ()
     player.name = userName;
 
     api.post('/player', player, function (results) {
-        console.log('results:');
-        console.log(results);
         window.match = results;
         window.player = player;
 
         document.getElementById('register-button').disabled = false;
         localStorage.setItem('player-info', JSON.stringify(player));
 
-        console.log('sending');
         webSocket.send(JSON.stringify({
             eventType: 'register',
             playerId: player.id,
@@ -41,14 +36,12 @@ document.getElementById('register-button').addEventListener('click', function ()
         } else {
             showWaitingForOpponent();
         }
-        console.log('sent');
     });
 });
 
 
 
 function showWaitingForOpponent() {
-    console.log('waiting for opponent...');
     document.getElementById('registration-step').style.display = 'none';
     document.getElementById('waiting-step').style.display = 'block';
 }
@@ -63,26 +56,45 @@ function sendGameEvent(description, score) {
     }));
 }
 
-var webSocket = new WebSocket("ws://" + document.location.host, "protocolOne");
-webSocket.onmessage = function (event) {
+var webSocket = null;
 
-    try {
-        var messageObj = JSON.parse(event.data);
-        if (messageObj.eventType === 'opponent-found') {
-            document.getElementById('registration').remove();
-            window.resetGame();
-            // document.getElementById('splash-screen').remove();
+function startWebSocket() {
+    webSocket = new WebSocket("ws://" + document.location.host, "protocolOne");
 
-        } else if (messageObj.eventType === 'game-activity') {
-            window.showOtherPlayerGameEvent(messageObj);
+    webSocket.onmessage = function (event) {
+
+        try {
+            var messageObj = JSON.parse(event.data);
+            if (messageObj.eventType === 'opponent-found') {
+                document.getElementById('registration').remove();
+                window.resetGame();
+                // document.getElementById('splash-screen').remove();
+
+            } else if (messageObj.eventType === 'game-activity') {
+                window.showOtherPlayerGameEvent(messageObj);
+            }
+        } catch (e) {}
+    }
+    webSocket.onopen = function (event) {
+        if (window.match && window.player) {
+            console.log('re-register');
+            webSocket.send(JSON.stringify({
+                playerId: window.player.id,
+                matchId: window.match.id,
+                eventType: 'register'
+            }));
         }
-    } catch (e) {}
+    };
+
+    webSocket.onclose = function () {
+        setTimeout(function () {
+            startWebSocket();
+        }, 5000);
+    }
 }
-webSocket.onopen = function (event) {
-    // exampleSocket.send("Here's some text that the server is urgently awaiting!"); 
-    // console.log('on open');
-    console.log('opened');
-};
+
+startWebSocket();
+
 
 function apiService() {
 
