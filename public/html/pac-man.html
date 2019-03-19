@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <title>Pac-Man</title>
@@ -18,23 +19,7 @@
             height: 100%;
         }
 
-        @keyframes pan-out {
-            from {
-                transform: scale(1) translateX(0px);
-            }
 
-            90% {
-                transform: scale(1.09) translateX(0px);
-            }
-
-            95% {
-                transform: scale(1.095) translateX(-2000px);
-            }
-
-            100% {
-                transform: scale(1.1) translateX(-2000px);
-            }
-        }
 
 
         body {
@@ -115,20 +100,31 @@
         }
     </style>
 </head>
-<body id="body">
-    <div id="splash-screen">
 
-    </div>
+<body id="body">
+    <!-- <div id="splash-screen">
+
+    </div> -->
 
     <div id="registration">
 
-        <h1>Register</h1>
+        <div id="registration-step">
+            <h1>Register</h1>
 
-        <div class="data-label">Your Name</div>
+            <div class="data-label">Your Name</div>
 
-        <input type="text" id="user-name"><br>
+            <input type="text" id="user-name"><br>
 
-        <button id="register-button" class="myButton">Register</button>
+            <button id="register-button" class="myButton">Register</button>
+        </div>
+
+        <div id="waiting-step">
+            Waiting for opponent...
+            <br>
+            <img src="/images/circle_0.svg">
+            <img src="/images/circle_1.svg">
+            <img src="/images/circle_2.svg">
+        </div>
     </div>
 
     <audio src="/sounds/coin.mp3" preload="auto" id="coinSound"></audio>
@@ -145,8 +141,13 @@
         <div id="scoreTitle">Score</div>
         <h1 id="score">0</h1>
 
-
         <canvas id="livesCanvas"></canvas>
+
+        <div id="otherPlayer">Your Opponent</div>
+        <h1 id="other-score">0</h1>
+        <canvas id="otherLivesCanvas"></canvas>
+
+
     </div>
     <canvas id="gameCanvas"></canvas>
     <script src="/javascript/jquery-2.1.3.min.js"></script>
@@ -164,4 +165,5 @@
     <script src="/javascript/PacMan.js"></script>
     <script src="/javascript/Game.js"></script>
 </body>
+
 </html>

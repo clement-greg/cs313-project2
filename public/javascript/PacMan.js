@@ -1,4 +1,4 @@
-﻿var pacMan = function (ctx) {
+﻿var pacMan = function (ctx, colorOverride) {
     moveablePlayer.call(this, ctx);
     this.point = new point(400, 625);
     this.direction = 'right';
@@ -6,6 +6,7 @@
     this.board = [];
     this.speed = 6;
     this.ctx = ctx;
+    this.colorOverride = colorOverride;
 
     this.outline = [
         { x: -22, y: -22 },
@@ -125,6 +126,9 @@ pacMan.prototype.draw = function () {
     }
 
     ctx.fillStyle = this.powerMode ? 'red' : 'yellow';
+    if(this.colorOverride) {
+        ctx.fillStyle = this.colorOverride;
+    }
     ctx.beginPath();
     ctx.moveTo(this.point.x, this.point.y);
 

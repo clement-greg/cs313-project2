@@ -69,3 +69,27 @@ input {
 	position:relative;
 	top:1px;
 }
+
+#waiting-step {
+	display: none;
+	font-size: 36px;
+	color: rgb(0,0,255)
+}
+
+@keyframes pan-out {
+	from {
+			transform: scale(1) translateX(0px);
+	}
+
+	90% {
+			transform: scale(1.09) translateX(0px);
+	}
+
+	95% {
+			transform: scale(1.095) translateX(-2000px);
+	}
+
+	100% {
+			transform: scale(1.1) translateX(-2000px);
+	}
+}

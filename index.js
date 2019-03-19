@@ -7,41 +7,59 @@ const db = require('./db')
 const uuid = require('./uuid')
 var bodyParser = require("body-parser")
 
+const connections = {};
+
 const app = express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(bodyParser.json())
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.sendFile(path.join(__dirname + '/public/html/pac-man.html')))
-  .get('/open-match', (req, res) => {
+  .patch('/join-match/', (req, res) => {
+    const playerId = req.header('player-id');
 
+    db.joinMatch(playerId, (match) => {
 
-    db.execute('SELECT * FROM match WHERE player_1 IS NULL OR player_2 IS NULL', null, results => {
+      if (match.player_2 === playerId) {
+        Object.entries(connections).forEach(entry => {
+          const key = entry[0];
+          const value = entry[1];
 
-      if (results.length === 0) {
-
-        const sql = 'INSERT INTO match (id) VALUES ($1)'
-        const id = uuid.generateUUID()
-        db.execute(sql, [id], results => {
-          res.end(JSON.stringify({
-            id: id
-          }))
-        })
-      } else {
-
-        res.end(JSON.stringify(results[0]))
+          if (key === match.player_1) {
+            value.send(JSON.stringify({
+              eventType: 'opponent-found',
+              opponentId: playerId
+            }));
+          }
+        });
       }
+      res.end(match);
     });
+  })
+  .get('/open-match', (req, res) => {
+    db.getOpenMatch(results => res.end(results));
   })
 
   .post('/player', (req, res) => {
+    const player = req.body;
+    db.savePlayer(player, match => {
+      if (match.player_2 === player.id) {
+        Object.entries(connections).forEach(entry => {
+          const key = entry[0];
+          const value = entry[1];
 
-    console.log('here is the body');
-    console.log(req.body)
-    const player = req.body
-    db.execute('INSERT INTO player (id, name) VALUES ($1, $2)', [player.id, player.name], () => {
-      res.end();
-    })
+          if (key === match.player_1) {
+            try {
+              value.send(JSON.stringify({
+                eventType: 'opponent-found',
+                opponentId: player.id,
+              }));
+            } catch (e) {}
+          }
+        });
+      }
+      res.end(JSON.stringify(match));
+    });
   })
 
 const server = http.createServer(app);
@@ -50,12 +68,36 @@ const wss = new WebSocket.Server({
 });
 
 wss.on('connection', (ws) => {
-
   ws.on('message', (message) => {
-    console.log('received: %s', message);
-    ws.send(`Hello, you sent -> ${message}`);
-  });
+    try {
+      const messageObj = JSON.parse(message);
+      if (messageObj.eventType === 'register') {
+        ws.playerId = messageObj.playerId;
+        ws.matchId = messageObj.matchId;
+        connections[messageObj.playerId] = ws;
+      } else if (messageObj.eventType === 'game-activity') {
+        Object.entries(connections).forEach(entry => {
+          const key = entry[0];
+          const value = entry[1];
 
-  ws.send('Hi there, I am a WebSocket server');
+          if (value.matchId === messageObj.matchId && value.playerId !== messageObj.playerId) {
+            value.send(message);
+          }
+        });
+      } else if (messageObj.eventType === 'assigned-match') {
+        ws.matchId = messageObj.matchId;
+      }
+    } catch (ex) {}
+  });
+  ws.on('close', req => {
+    console.log('close');
+    console.log(ws);
+    delete connections[req.id];
+    if (ws.matchId) {
+      db.endMatch(ws.matchId, () => {});
+    }
+  });
 });
+
+
 server.listen(PORT, () => console.log(`Listening on ${ PORT }`))
