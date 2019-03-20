@@ -71,7 +71,7 @@ function startWebSocket() {
 
         try {
             var messageObj = JSON.parse(event.data);
-            console.log(messageObj);
+
             if (messageObj.eventType === 'opponent-found') {
                 document.getElementById('registration').remove();
                 countDown();
@@ -82,7 +82,7 @@ function startWebSocket() {
                 document.getElementById('registration').remove();
                 window.resetGame();
             } else if (messageObj.eventType === 'countdown') {
-                console.log(messageObj.data);
+
             }
         } catch (e) {}
     }
@@ -136,7 +136,21 @@ function countDown() {
 function apiService() {
 
     function get(url, callback) {
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function (results) {
 
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                var responseText = oReq.responseText;
+                if(!responseText) {
+                    callback(null);
+                } else {
+                    callback(JSON.parse(responseText));
+                }
+            }
+        });
+        oReq.open("GET", url);
+        oReq.setRequestHeader('Content-Type', 'application/json');
+        oReq.send();
     }
 
     function post(url, data, callback) {
@@ -144,7 +158,12 @@ function apiService() {
         oReq.addEventListener("load", function (results) {
 
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                callback(JSON.parse(oReq.responseText));
+                var responseText = oReq.responseText;
+                if(!responseText) {
+                    callback(null);
+                } else {
+                    callback(JSON.parse(responseText));
+                }
             }
         });
         oReq.open("POST", url);

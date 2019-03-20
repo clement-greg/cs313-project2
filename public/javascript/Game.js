@@ -10,7 +10,7 @@
     var ghostSpeed = 2;
     var imgBackground = new Image();
     var backgroundLoaded = false;
-    var gameDuration = .5;
+    var gameDuration = 5;
     var gameTime = new Date();
     var gameOverShown = false;
     gameTime.setSeconds(gameTime.setSeconds() + gameDuration * 60);
@@ -1416,7 +1416,6 @@
         backgroundLoaded = true;
         gameTime = new Date();
         gameTime.setSeconds(gameTime.getSeconds() + gameDuration * 60);
-        console.log(gameTime);
         soundFx.playBgMusic();
         gameOver = false;
         gameOverShown = false;

@@ -13,6 +13,7 @@ module.exports.execute = function (query, parameters, callback) {
 
     pool.query(query, parameters, (error, results) => {
         if (error) {
+            console.log(error);
             throw error
         }
         callback(results.rows)
@@ -37,6 +38,12 @@ module.exports.getOpenMatch = function (callback) {
     });
 }
 
+module.exports.getMatchResults = function(playerId, callback) {
+    this.execute('SELECT * FROM match_results WHERE player_1_id = $1 OR player_2_id = $1 ORDER BY match_complete_date DESC LIMIT 10', [playerId],results=> {
+        callback(results);
+    });
+}
+
 module.exports.endMatch = function (matchId, callback) {
     this.execute('UPDATE match SET match_complete_date = NOW() WHERE id = $1', [matchId], callback);
 }
@@ -55,6 +62,16 @@ module.exports.savePlayer = function (player, callback) {
         }
     });
 
+}
+
+module.exports.saveScore = function (score, callback) {
+    this.execute('UPDATE match SET player_1_score = $1, match_complete_date = NOW() WHERE id = $2 AND player_1 = $3', [
+        score.score, score.matchId, score.playerId
+    ], ()=> {
+        this.execute('UPDATE match SET player_2_score = $1, match_complete_date = NOW() WHERE id = $2 AND player_2 = $3', [
+            score.score, score.matchId, score.playerId
+        ],callback);
+    });
 }
 
 module.exports.joinMatch = function (playerId, callback) {

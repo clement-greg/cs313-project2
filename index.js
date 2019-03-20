@@ -15,6 +15,16 @@ const app = express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.sendFile(path.join(__dirname + '/public/html/pac-man.html')))
+  .post('/update-score', (req, res) => {
+    const score = req.body;
+    db.saveScore(score, () => {
+      res.end();
+    });
+  })
+  .get('/match-results/:playerId', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.getMatchResults(req.params.playerId, results => res.end(JSON.stringify(results)))
+  })
   .patch('/join-match/', (req, res) => {
     const playerId = req.header('player-id');
 

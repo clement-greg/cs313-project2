@@ -3,6 +3,7 @@ html {
 	overflow: hidden;
 
 }
+
 body {
 	font-family: 'Roboto';
 	background: black;
@@ -55,18 +56,20 @@ body {
 h1 {
 	font-family: atari;
 	font-size: 56px;
-    margin: 0;
+	margin: 0;
 }
 
-h2, h3, h4 {
+h2,
+h3,
+h4 {
 	font-family: atari;
 	margin: 0;
 }
 
 .pac-font {
 	font-family: pacman;
-    line-height: 37px;
-    color: rgb(255, 217,32) !important;
+	line-height: 37px;
+	color: rgb(255, 217, 32) !important;
 	text-shadow: 1px 1px 1px #082030;
 	font-size: 38px;
 	line-height: 47px;
@@ -76,23 +79,42 @@ h2, h3, h4 {
 	display: none;
 }
 
-#game-over-display {
-    display: none;
-    margin: 0 auto;
-    background-color: rgba(255,255,255,.1);
-    width: 100%;
-    max-width: 700px;
-    text-align: center;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 40px;
+#match-list li {
+	list-style: none;
+	/* border-bottom: 1px dotted rgba(255,255,255,.5); */
+	border: 3px solid #276873;
+	border-radius: 4px;
+	margin-bottom: 10px;
+	box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
+	padding-top: 10px;
+    padding-bottom: 10px;
 }
+
+#match-list li p {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+#game-over-display {
+	display: none;
+	margin: 0 auto;
+	background-color: rgba(255, 255, 255, .1);
+	width: 100%;
+	max-width: 700px;
+	text-align: center;
+	padding: 20px;
+	border-radius: 10px;
+	margin-top: 40px;
+	box-shadow: 0px 0px 41px 0px rgba(39, 104, 115, 1);
+}
+
+
 
 #gameCanvas {
 	height: 800px;
 	margin: 20px;
 	width: 800px;
-	background-color: rgba(0,0,0,1);
+	background-color: rgba(0, 0, 0, 1);
 	/*border: 2px solid #808080;*/
 	display: table;
 	margin: 0 auto;
@@ -102,42 +124,42 @@ h2, h3, h4 {
 }
 
 .countdown-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: none;
 }
 
 #scoreBox {
-    box-shadow: 0px 0px 10px 0px #031f03;
-    padding: 10px;
-    border: 1px solid rgba(0,0,0,.1);
-    border-radius: 5px;
-    margin-left: 20px;
-    margin-right: 40px;
-    padding: 20px;
-    background-color: rgba(255,255,255,.2);
-    border: 1px solid blue;
+	box-shadow: 0px 0px 10px 0px #031f03;
+	padding: 10px;
+	border: 1px solid rgba(0, 0, 0, .1);
+	border-radius: 5px;
+	margin-left: 20px;
+	margin-right: 40px;
+	padding: 20px;
+	background-color: rgba(255, 255, 255, .2);
+	border: 1px solid blue;
 	margin-top: 29px;
 	display: none;
 }
 
 #time-box {
 	box-shadow: 0px 0px 10px 0px #031f03;
-    padding: 10px;
-    border: 1px solid rgba(0,0,0,.1);
-    border-radius: 5px;
-    margin-right: 20px;
-    margin-left: 40px;
-    padding: 20px;
-    background-color: rgba(255,255,255,.2);
-    border: 1px solid blue;
+	padding: 10px;
+	border: 1px solid rgba(0, 0, 0, .1);
+	border-radius: 5px;
+	margin-right: 20px;
+	margin-left: 40px;
+	padding: 20px;
+	background-color: rgba(255, 255, 255, .2);
+	border: 1px solid blue;
 	margin-top: 29px;
 	display: none;
 }
 
 #scoreTitle {
-	border-bottom: 1px solid rgba(0,0,0,.1);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
 	font-size: 24px;
 }
 
@@ -147,39 +169,51 @@ h2, h3, h4 {
 }
 
 #registration {
-  background-color: #fff;
-  position: absolute;
-  height: 300px;
-  width: 500px;
-  left: calc(50% - 250px);
-  top: 200px;
-  z-index: 10;
-  border: 3px solid #276873;
-  border-radius: 7px;
-  padding: 20px;
+	background-color: black;
+	position: absolute;
+	height: 300px;
+	width: 500px;
+	left: calc(50% - 250px);
+	top: 200px;
+	z-index: 10;
+	border: 3px solid #276873;
+	border-radius: 7px;
+	padding: 20px;
+	box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
+}
+
+#registration input {
+	background: rgba(255, 255, 255, .2);
+	border: 2px solid rgba(255, 255, 255, .4);
+	border-radius: 3px;
+	color: rgba(255, 255, 255, .7);
+	margin-top: 10px;
+	margin-bottom: 30px;
 }
 
 #pac-main-reg-img {
-    height: 95px;
-    display: table;
-    margin: 0 auto;
-    margin-bottom: 20px;
+	height: 95px;
+	display: table;
+	margin: 0 auto;
+	margin-bottom: 20px;
 }
 
 .data-label {
-  color: #276873;
+	color: #276873;
+	text-transform: uppercase;
+	font-style: italic;
 }
 
 #registration h1 {
-  text-align: left;
-  color: #276873;
+	text-align: left;
+	color: #276873;
 }
 
 input {
-  font-size: 20px;
-  width: calc(100% - 20px);
-  padding: 5px;
-  color: rgba(0,0,0,.6);
+	font-size: 20px;
+	width: calc(100% - 20px);
+	padding: 5px;
+	color: rgba(0, 0, 0, .6);
 
 }
 
@@ -187,46 +221,48 @@ input {
 	-moz-box-shadow: 0px 10px 14px -7px #276873;
 	-webkit-box-shadow: 0px 10px 14px -7px #276873;
 	box-shadow: 0px 10px 14px -7px #276873;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
-	background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
-	background-color:#599bb3;
-	-moz-border-radius:8px;
-	-webkit-border-radius:8px;
-	border-radius:8px;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:20px;
-	font-weight:bold;
-	padding:13px 32px;
-	text-decoration:none;
-  text-shadow:0px 1px 0px #3d768a;
-  display: table;
-  margin: 0 auto;
-  margin-top: 10px;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
+	background: -moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background: -webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background: -o-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background: -ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background: linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99', GradientType=0);
+	background-color: #599bb3;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 13px 32px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #3d768a;
+	display: table;
+	margin: 0 auto;
+	margin-top: 10px;
 }
+
 .myButton:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
-	background:-moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-o-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);
-	background-color:#408c99;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
+	background: -moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background: -webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background: -o-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background: -ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background: linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3', GradientType=0);
+	background-color: #408c99;
 }
+
 .myButton:active {
-	position:relative;
-	top:1px;
+	position: relative;
+	top: 1px;
 }
 
 .myButton:disabled {
-	background: rgba(0,0,0,.4);
+	background: rgba(0, 0, 0, .4);
 	cursor: default;
 	box-shadow: none;
 }
@@ -234,36 +270,36 @@ input {
 #waiting-step {
 	display: none;
 	font-size: 36px;
-	color: rgb(0,0,255)
+	color: rgb(0, 0, 255)
 }
 
 @keyframes pan-out {
 	from {
-			transform: scale(1) translateX(0px);
+		transform: scale(1) translateX(0px);
 	}
 
 	90% {
-			transform: scale(1.09) translateX(0px);
+		transform: scale(1.09) translateX(0px);
 	}
 
 	95% {
-			transform: scale(1.095) translateX(-2000px);
+		transform: scale(1.095) translateX(-2000px);
 	}
 
 	100% {
-			transform: scale(1.1) translateX(-2000px);
+		transform: scale(1.1) translateX(-2000px);
 	}
 }
 
 @keyframes expand {
 	from {
-			transform: scale(1) ;
-			opacity: 1;
+		transform: scale(1);
+		opacity: 1;
 	}
 
 	to {
-			transform: scale(10) ;
-			opacity: 0;
+		transform: scale(10);
+		opacity: 0;
 	}
 }
 
@@ -272,6 +308,7 @@ input {
 		opacity: 1;
 
 	}
+
 	to {
 		opacity: .5;
 	}
