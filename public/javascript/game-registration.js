@@ -65,7 +65,7 @@ setTimeout(function () {
 
 var musicIntroInterval = setInterval(function () {
     soundFx.playPacManIntro();
-}, 10000);
+}, 12000);
 
 var webSocket = null;
 
