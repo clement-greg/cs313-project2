@@ -4,7 +4,12 @@ var gameOverController = function () {
     document.body.style.overflow = 'auto';
 
 
-    setTimeout(()=> soundFx.playPacManIntro(), 4000);
+    setTimeout(function () {
+        soundFx.playPacManIntro();
+        setInterval(function () {
+            soundFx.playPacManIntro()
+        }, 12000);
+    }, 4000);
 
     document.getElementById('game-over-display').style.display = 'table';
 
