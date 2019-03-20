@@ -58,10 +58,11 @@ function sendGameEvent(description, score) {
     }));
 }
 
-setTimeout(() => {
 
+
+var musicIntroInterval = setInterval(function() {
     soundFx.playPacManIntro();
-}, 1000);
+}, 5000);
 
 var webSocket = null;
 
@@ -130,6 +131,7 @@ function countDown() {
         document.getElementById('play').style.display = 'inline';
         document.getElementById('play').classList.add('expand');
         window.resetGame();
+        clearInterval(musicIntroInterval);
         document.getElementById('scoreBox').style.display = 'block';
         document.getElementById('time-box').style.display = 'block';
     }, 3000);

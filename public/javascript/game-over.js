@@ -4,7 +4,7 @@ var gameOverController = function () {
     document.body.style.overflow = 'auto';
 
 
-    soundFx.playPacManIntro();
+    setTimeout(()=> soundFx.playPacManIntro(), 4000);
 
     document.getElementById('game-over-display').style.display = 'table';
 
