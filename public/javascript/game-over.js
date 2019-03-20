@@ -4,6 +4,8 @@ var gameOverController = function () {
     document.body.style.overflow = 'auto';
 
 
+    soundFx.playPacManIntro();
+
     document.getElementById('game-over-display').style.display = 'table';
 
     var opponentScore = parseInt(document.getElementById('other-score').innerText);
@@ -11,17 +13,19 @@ var gameOverController = function () {
 
     if (yourScore > opponentScore) {
         document.getElementById('you-win-panel').style.display = 'block';
+        soundFx.playWin();
     } else if (yourScore === opponentScore) {
         document.getElementById('you-tied-panel').style.display = 'block';
     } else {
         document.getElementById('you-lose-panel').style.display = 'block';
+        soundFx.playSad();
     }
 
     // window.match = results;
     // window.player = player;
     var api = apiService();
 
-    api.post('/update-score', {
+    api.post('/api/update-score', {
         matchId: window.match.id,
         playerId: window.player.id,
         score: yourScore
@@ -30,7 +34,7 @@ var gameOverController = function () {
 
         setTimeout(function () {
 
-            api.get('/match-results/' + window.player.id, function (results) {
+            api.get('/api/match-results/' + window.player.id, function (results) {
                 console.log('my matches:');
                 results.forEach(item => {
                     item.match_complete_date = new Date(item.match_complete_date);
@@ -69,7 +73,7 @@ var gameOverController = function () {
 
                     li.innerHTML = template;
                     console.log(template);
-                    
+
 
                     document.getElementById('match-list').appendChild(li);
 

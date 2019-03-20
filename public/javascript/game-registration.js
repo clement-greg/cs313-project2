@@ -17,7 +17,8 @@ document.getElementById('register-button').addEventListener('click', function ()
 
     player.name = userName;
 
-    api.post('/player', player, function (results) {
+
+    api.post('/api/player', player, function (results) {
         window.match = results;
         window.player = player;
 
@@ -56,6 +57,11 @@ function sendGameEvent(description, score) {
         score: score,
     }));
 }
+
+setTimeout(() => {
+
+    soundFx.playPacManIntro();
+}, 1000);
 
 var webSocket = null;
 
@@ -141,7 +147,7 @@ function apiService() {
 
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 var responseText = oReq.responseText;
-                if(!responseText) {
+                if (!responseText) {
                     callback(null);
                 } else {
                     callback(JSON.parse(responseText));
@@ -159,7 +165,7 @@ function apiService() {
 
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 var responseText = oReq.responseText;
-                if(!responseText) {
+                if (!responseText) {
                     callback(null);
                 } else {
                     callback(JSON.parse(responseText));

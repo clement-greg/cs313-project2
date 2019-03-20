@@ -38,8 +38,12 @@ module.exports.getOpenMatch = function (callback) {
     });
 }
 
-module.exports.getMatchResults = function(playerId, callback) {
-    this.execute('SELECT * FROM match_results WHERE player_1_id = $1 OR player_2_id = $1 ORDER BY match_complete_date DESC LIMIT 10', [playerId],results=> {
+module.exports.getLeaderBoard = function (callback) {
+    this.execute('SELECT * FROM leader_board ORDER BY score DESC LIMIT 10', [], callback);
+}
+
+module.exports.getMatchResults = function (playerId, callback) {
+    this.execute('SELECT * FROM match_results WHERE player_1_id = $1 OR player_2_id = $1 ORDER BY match_complete_date DESC LIMIT 10', [playerId], results => {
         callback(results);
     });
 }
@@ -67,10 +71,10 @@ module.exports.savePlayer = function (player, callback) {
 module.exports.saveScore = function (score, callback) {
     this.execute('UPDATE match SET player_1_score = $1, match_complete_date = NOW() WHERE id = $2 AND player_1 = $3', [
         score.score, score.matchId, score.playerId
-    ], ()=> {
+    ], () => {
         this.execute('UPDATE match SET player_2_score = $1, match_complete_date = NOW() WHERE id = $2 AND player_2 = $3', [
             score.score, score.matchId, score.playerId
-        ],callback);
+        ], callback);
     });
 }
 

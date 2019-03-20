@@ -1,4 +1,4 @@
-﻿function soundFx() { }
+﻿function soundFx() {}
 
 soundFx.playCoin = function () {
     var v = document.getElementById("coinSound");
@@ -53,6 +53,30 @@ soundFx.pauseBgMusic = function () {
     v.pause();
 }
 
+soundFx.playScanner = function () {
+    var v = document.getElementById("scanner");
+    v.play();
+}
 
+soundFx.playSad = function () {
+    var v = document.getElementById("sad-audio");
+    v.play();
+}
 
+soundFx.playWin = function () {
+    var v = document.getElementById("win-audio");
+    v.play();
+}
 
+soundFx.playPacManIntro = function () {
+    var v = document.getElementById("pacman-intro-audio");
+    v.volume = 0.15;
+    v.play();
+}
+
+soundFx.pausePacManIntro = function () {
+    var v = document.getElementById("pacman-intro-audio");
+
+    v.pause();
+
+}

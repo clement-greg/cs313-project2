@@ -9,6 +9,9 @@ body {
 	background: black;
 	color: #fff;
 	height: 100%;
+	background-image: url(/images/pac-man-bg.svg);
+	background-position: 50% 0%;
+	background-repeat: no-repeat;
 }
 
 
@@ -106,15 +109,31 @@ h4 {
 	border-radius: 10px;
 	margin-top: 40px;
 	box-shadow: 0px 0px 41px 0px rgba(39, 104, 115, 1);
+	background-color: rgba(60,60,60,1);
 }
 
 
+#demo-loop {
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
+#demo-loop canvas {
+	height: 2100px;
+    width: 2100px;
+    margin: 0 auto;
+    display: table;
+}
 
 #gameCanvas {
 	height: 800px;
 	margin: 20px;
 	width: 800px;
-	background-color: rgba(0, 0, 0, 1);
+	/* background-color: rgba(0, 0, 0, 1); */
 	/*border: 2px solid #808080;*/
 	display: table;
 	margin: 0 auto;
@@ -170,16 +189,16 @@ h4 {
 
 #registration {
 	background-color: black;
-	position: absolute;
-	height: 300px;
-	width: 500px;
-	left: calc(50% - 250px);
-	top: 200px;
-	z-index: 10;
-	border: 3px solid #276873;
-	border-radius: 7px;
-	padding: 20px;
-	box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
+    position: absolute;
+    height: 300px;
+    width: 500px;
+    left: calc(50% - 273px);
+    top: calc(50% - 173px);
+    z-index: 10;
+    border: 3px solid #276873;
+    border-radius: 7px;
+    padding: 20px;
+    box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
 }
 
 #registration input {
@@ -312,6 +331,21 @@ input {
 	to {
 		opacity: .5;
 	}
+}
+
+@keyframes slide-in {
+	from {
+		opacity: 0;
+		transform: translateY(-300px) scale(.5) perspective(10px) rotateX(1deg);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0px) scale(1);
+	}
+}
+
+.slide-in {
+	animation: slide-in .5s ease-out;
 }
 
 .blink {

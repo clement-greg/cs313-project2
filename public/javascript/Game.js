@@ -10,9 +10,11 @@
     var ghostSpeed = 2;
     var imgBackground = new Image();
     var backgroundLoaded = false;
-    var gameDuration = 5;
+    var gameDuration = .5;
     var gameTime = new Date();
     var gameOverShown = false;
+    var playedEndOfGameWarning = false;
+
     gameTime.setSeconds(gameTime.setSeconds() + gameDuration * 60);
     imgBackground.onload = function () {
         backgroundLoaded = true;
@@ -1416,9 +1418,11 @@
         backgroundLoaded = true;
         gameTime = new Date();
         gameTime.setSeconds(gameTime.getSeconds() + gameDuration * 60);
+        soundFx.pausePacManIntro();
         soundFx.playBgMusic();
         gameOver = false;
         gameOverShown = false;
+        playedEndOfGameWarning = false;
     }
 
     window.resetGame = resetGame;
@@ -1575,6 +1579,7 @@
             // Game is over
             playingGame = false;
             soundFx.pauseBgMusic();
+            soundFx.pauseInvicibleMusic();
             gameOver = true;
             if(!gameOverShown) {
                 gameOverShown = true;
@@ -1705,6 +1710,7 @@
         var now = new Date();
         let secondsLeft = (gameTime.getTime() - now.getTime()) / 1000;
         var under60 = secondsLeft < 60;
+        var under8= secondsLeft < 8;
 
         const minutes = Math.floor(secondsLeft / 60);
         secondsLeft = Math.floor(secondsLeft - (minutes * 60));
@@ -1716,6 +1722,12 @@
             document.getElementById('time-remaining').classList.add('blink');
         } else {
             document.getElementById('time-remaining').classList.remove('blink');
+        }
+
+        if(under8 && !playedEndOfGameWarning) {
+            playedEndOfGameWarning = true;
+            console.log('playing scanner');
+            soundFx.playScanner();
         }
 
         let secondsLeftString = secondsLeft.toString();

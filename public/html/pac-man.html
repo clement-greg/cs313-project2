@@ -3,9 +3,12 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Pac-Man</title>
+    <title>PacMan Battle</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <link href="stylesheets/main.css" rel="stylesheet">
+    <link rel="icon" 
+      type="image/png" 
+      href="/images/fav-icon.png">
     <style>
 
     </style>
@@ -20,7 +23,7 @@
     <h1 class="countdown-text" id="count-1">1</h1>
     <h1 class="countdown-text" id="play">Play</h1>
 
-    <div id="registration">
+    <div id="registration" class="slide-in">
 
         <div id="registration-step">
             <div class="flex-container">
@@ -64,6 +67,12 @@
     <audio src="/sounds/arcade_funk.mp3" preload="auto" id="invincibleMusic"></audio>
     <audio src="/sounds/power_up.mp3" preload="auto" id="powerUpSound"></audio>
     <audio src="/sounds/bg-music.mp3" preload="auto" loop="loop" id="bgMusic"></audio>
+    <audio src="/sounds/scanner.mp3" preload="auto" id="scanner"></audio>
+    <audio src="/sounds/sad.mp3" preload="auto" id="sad-audio"></audio>
+    <audio src="/sounds/win.mp3" preload="auto" id="win-audio"></audio>
+    <audio src="/sounds/pacman-intro.mp3"  preload="auto" id="pacman-intro-audio"></audio>
+
+    
 
 
 
@@ -98,6 +107,12 @@
             </div>
         </div>
     </div>
+
+    <!-- <div id="demo-loop">
+        <canvas id="demo-loop-canvas">
+            
+        </canvas>
+    </div> -->
 
     <div id="game-over-display">
 
@@ -139,6 +154,7 @@
     <script src="/javascript/PacMan.js"></script>
     <script src="/javascript/Game.js"></script>
     <script src="/javascript/game-over.js"></script>
+    <script src="/javascript/demo-loop.js"></script>
 
     <script type="text/template" id="match-result-item-template">
         <h3>vs {{opponentName}}</h3>

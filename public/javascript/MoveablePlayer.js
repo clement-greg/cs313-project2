@@ -50,6 +50,10 @@ moveablePlayer.prototype.advance = function () {
 
 moveablePlayer.prototype.leftCheckPadding = 28;
 moveablePlayer.prototype.canGoLeft = function () {
+    if(!this.board || this.board.length === 0) {
+        return true;
+    }
+
     var cellWidth = gameArgs.A_SCREEN_WIDTH / 16;
     var cellHeight = gameArgs.A_SCREEN_HEIGHT / 16;
     var cellX = Math.round((this.point.x - 25) / cellWidth);
@@ -69,6 +73,9 @@ moveablePlayer.prototype.canGoLeft = function () {
 
 moveablePlayer.prototype.rightCheckPadding = 24;
 moveablePlayer.prototype.canGoRight = function () {
+    if(!this.board || this.board.length === 0) {
+        return true;
+    }
     var cellWidth = gameArgs.A_SCREEN_WIDTH / 16;
     var cellHeight = gameArgs.A_SCREEN_HEIGHT / 16;
     var cellX = Math.round((this.point.x - 25) / cellWidth);
@@ -88,6 +95,10 @@ moveablePlayer.prototype.canGoRight = function () {
 
 moveablePlayer.prototype.bottomCheckPadding = 24;
 moveablePlayer.prototype.canGoDown = function () {
+    if(!this.board || this.board.length === 0) {
+        return true;
+    }
+
     var cellWidth = gameArgs.A_SCREEN_WIDTH / 16;
     var cellHeight = gameArgs.A_SCREEN_HEIGHT / 16;
     var cellX = Math.round((this.point.x - 25) / cellWidth);
@@ -106,6 +117,10 @@ moveablePlayer.prototype.canGoDown = function () {
 
 moveablePlayer.prototype.topCheckPadding = 28;
 moveablePlayer.prototype.canGoUp = function () {
+    if(!this.board || this.board.length === 0) {
+        return true;
+    }
+
     var cellWidth = gameArgs.A_SCREEN_WIDTH / 16;
     var cellHeight = gameArgs.A_SCREEN_HEIGHT / 16;
     var cellX = Math.round((this.point.x - 25) / cellWidth);
