@@ -59,9 +59,11 @@ function sendGameEvent(description, score) {
 }
 
 
-setTimeout(function() {soundFx.playPacManIntro();});
+setTimeout(function () {
+    soundFx.playPacManIntro();
+}, 1000);
 
-var musicIntroInterval = setInterval(function() {
+var musicIntroInterval = setInterval(function () {
     soundFx.playPacManIntro();
 }, 10000);
 
