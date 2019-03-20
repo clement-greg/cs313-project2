@@ -60,9 +60,10 @@ function sendGameEvent(description, score) {
 
 
 
+soundFx.playPacManIntro();
 var musicIntroInterval = setInterval(function() {
     soundFx.playPacManIntro();
-}, 5000);
+}, 10000);
 
 var webSocket = null;
 
