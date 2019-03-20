@@ -63,15 +63,13 @@ function sendGameEvent(description, score) {
 //     soundFx.playPacManIntro();
 // }, 1000);
 
-var musicIntroInterval = null;
-window.addEventListener('onfocus', function () {
-    setTimeout(function () {
-        soundFx.playPacManIntro();
-    }, 1000);
-    musicIntroInterval = setInterval(function () {
-        soundFx.playPacManIntro();
-    }, 12000);
-});
+setTimeout(function () {
+    soundFx.playPacManIntro();
+    document.getElementById('user-name').focus();
+}, 500);
+musicIntroInterval = setInterval(function () {
+    soundFx.playPacManIntro();
+}, 12000);
 
 var webSocket = null;
 
