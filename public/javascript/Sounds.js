@@ -71,7 +71,15 @@ soundFx.playWin = function () {
 soundFx.playPacManIntro = function () {
     var v = document.getElementById("pacman-intro-audio");
     v.volume = 0.15;
-    v.play();
+    var playPromise = v.play();
+    if(playPromise !== undefined) {
+        playPromise.then(_=>{
+            console.log('play promise fulfilled');
+        }).catch(error=> {
+            console.log('play promise error:');
+            console.log(error);
+        });
+    }
 }
 
 soundFx.pausePacManIntro = function () {
