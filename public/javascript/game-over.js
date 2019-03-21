@@ -26,21 +26,63 @@ var gameOverController = function () {
         soundFx.playSad();
     }
 
+    document.getElementById('show-leader-board-button').addEventListener('click', function () {
+        document.getElementById('my-matches-div').style.display = 'none';
+
+        var div = document.getElementById('leader-board-div');
+        div.style.display = 'block';
+        div.classList.add('slide-in');
+        setTimeout(function () {
+            div.classList.remove('slide-in')
+        }, 1000);
+        document.getElementById('show-leader-board-button').classList.add('selected');
+        document.getElementById('show-my-matches-button').classList.remove('selected');
+    });
+
+    document.getElementById('show-my-matches-button').addEventListener('click', function () {
+        var div = document.getElementById('my-matches-div');
+        div.style.display = 'block';
+        div.classList.add('slide-in');
+        setTimeout(function () {
+            div.classList.remove('slide-in')
+        }, 1000);
+        document.getElementById('leader-board-div').style.display = 'none';
+        document.getElementById('show-leader-board-button').classList.remove('selected');
+        document.getElementById('show-my-matches-button').classList.add('selected');
+    });
+
     // window.match = results;
     // window.player = player;
     var api = apiService();
+
+    api.get('/api/leader-board', function (results) {
+
+        console.log('leader-board:');
+        console.log(results);
+
+        results.forEach(function (item) {
+            var template = document.getElementById('leader-board-item').innerHTML;
+            template = template.replace('{{player_name}}', item.player_name);
+            template = template.replace('{{score}}', item.score);
+            var li = document.createElement('li');
+
+            li.innerHTML = template;
+            document.getElementById('leader-board').appendChild(li);
+
+        });
+    });
 
     api.post('/api/update-score', {
         matchId: window.match.id,
         playerId: window.player.id,
         score: yourScore
     }, function () {
-        console.log('saved');
+
 
         setTimeout(function () {
 
             api.get('/api/match-results/' + window.player.id, function (results) {
-                console.log('my matches:');
+
                 results.forEach(item => {
                     item.match_complete_date = new Date(item.match_complete_date);
                     if (item.player_1_id === window.player.id) {
@@ -77,14 +119,21 @@ var gameOverController = function () {
                     var li = document.createElement('li');
 
                     li.innerHTML = template;
-                    console.log(template);
+
 
 
                     document.getElementById('match-list').appendChild(li);
 
 
                 });
-                console.log(results);
+
+                var div = document.getElementById('my-matches-div');
+                div.style.display = 'block';
+                div.classList.add('slide-in');
+                setTimeout(function () {
+                    div.classList.remove('slide-in')
+                }, 1000);
+
             });
         }, 1000);
     });

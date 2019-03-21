@@ -4,6 +4,16 @@ html {
 
 }
 
+@keyframes slide-bg-in {
+	from {
+		background-position: -60% 0%;
+	}
+
+	to {
+		background-position: 50% 0%;
+	}
+}
+
 body {
 	font-family: 'Roboto';
 	background: black;
@@ -12,16 +22,16 @@ body {
 	background-image: url(/images/pac-man-bg.svg);
 	background-position: 50% 0%;
 	background-repeat: no-repeat;
-}
-
-
-
-
-body {
 	background-color: #000;
 	overflow: hidden;
 	height: 100%;
+	animation: slide-bg-in 1.5s ease-out;
 }
+
+
+
+
+body {}
 
 #splash-screen {
 	background-image: url(/images/pack-man-splash.png);
@@ -90,10 +100,29 @@ h4 {
 	margin-bottom: 10px;
 	box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
 	padding-top: 10px;
-    padding-bottom: 10px;
+	padding-bottom: 10px;
 }
 
 #match-list li p {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+#leader-board li {
+	list-style: none;
+	/* border-bottom: 1px dotted rgba(255,255,255,.5); */
+	border: 3px solid #276873;
+	border-radius: 4px;
+	margin-bottom: 10px;
+	box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 30px;
+	padding-right: 30px;
+	text-align: left;
+}
+
+#leader-board li p {
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
@@ -109,24 +138,24 @@ h4 {
 	border-radius: 10px;
 	margin-top: 40px;
 	box-shadow: 0px 0px 41px 0px rgba(39, 104, 115, 1);
-	background-color: rgba(60,60,60,1);
+	background-color: rgba(60, 60, 60, 1);
 }
 
 
 #demo-loop {
 	position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 
 }
 
 #demo-loop canvas {
 	height: 2100px;
-    width: 2100px;
-    margin: 0 auto;
-    display: table;
+	width: 2100px;
+	margin: 0 auto;
+	display: table;
 }
 
 #gameCanvas {
@@ -189,16 +218,16 @@ h4 {
 
 #registration {
 	background-color: black;
-    position: absolute;
-    height: 300px;
-    width: 500px;
-    left: calc(50% - 273px);
-    top: calc(50% - 173px);
-    z-index: 10;
-    border: 3px solid #276873;
-    border-radius: 7px;
-    padding: 20px;
-    box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
+	position: absolute;
+	height: 300px;
+	width: 500px;
+	left: calc(50% - 273px);
+	top: calc(50% - 173px);
+	z-index: 10;
+	border: 3px solid #276873;
+	border-radius: 7px;
+	padding: 20px;
+	box-shadow: 0px 0px 31px 0px rgba(39, 104, 115, 1);
 }
 
 #registration input {
@@ -286,6 +315,10 @@ input {
 	box-shadow: none;
 }
 
+.myButton.selected {
+	background: orange;
+}
+
 #waiting-step {
 	display: none;
 	font-size: 36px;
@@ -338,6 +371,7 @@ input {
 		opacity: 0;
 		transform: translateY(-300px) scale(.5) perspective(10px) rotateX(1deg);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0px) scale(1);

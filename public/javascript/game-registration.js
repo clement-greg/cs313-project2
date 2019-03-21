@@ -37,6 +37,8 @@ document.getElementById('register-button').addEventListener('click', function ()
             countDown();
         } else {
             showWaitingForOpponent();
+            window.isPlayer1 = true;
+            console.log('im player 1')
         }
     });
 });
@@ -46,15 +48,17 @@ document.getElementById('register-button').addEventListener('click', function ()
 function showWaitingForOpponent() {
     document.getElementById('registration-step').style.display = 'none';
     document.getElementById('waiting-step').style.display = 'block';
+    window.isPlayer1 = true;
 }
 
-function sendGameEvent(description, score) {
+function sendGameEvent(description, score, meta) {
     webSocket.send(JSON.stringify({
         eventType: 'game-activity',
         matchId: window.match.id,
         playerId: window.player.id,
         description: description,
         score: score,
+        meta: meta,
     }));
 }
 
@@ -91,18 +95,25 @@ function startWebSocket() {
                 countDown();
 
             } else if (messageObj.eventType === 'game-activity') {
+                if(messageObj.description === 'bomb-retrieved') {
+                    console.log('received bomb');
+                    window.opponentGotBomb();
+                } else if(messageObj.description === 'bomb-created'){
+                    var bomb = JSON.parse(messageObj.meta);
+                    window.receiveBomb(bomb);
+                } else {
                 window.showOtherPlayerGameEvent(messageObj);
+                }
             } else if (messageObj.eventType === 'play') {
                 document.getElementById('registration').remove();
                 window.resetGame();
             } else if (messageObj.eventType === 'countdown') {
 
-            }
+            } 
         } catch (e) {}
     }
     webSocket.onopen = function (event) {
         if (window.match && window.player) {
-            console.log('re-register');
             webSocket.send(JSON.stringify({
                 playerId: window.player.id,
                 matchId: window.match.id,

@@ -26,8 +26,6 @@ function demoLoop() {
 
     function start() {
         // // pacMan.point = new point(100, 100);
-        // console.log(myPacMan);
-        // console.log(myGhost);
         // myPacMan.point = {
         //     x: 150,
         //     y: 50

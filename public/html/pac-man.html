@@ -6,9 +6,7 @@
     <title>PacMan Battle</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <link href="stylesheets/main.css" rel="stylesheet">
-    <link rel="icon" 
-      type="image/png" 
-      href="/images/fav-icon.png">
+    <link rel="icon" type="image/png" href="/images/fav-icon.png">
     <style>
 
     </style>
@@ -60,7 +58,7 @@
         </div>
     </div>
 
-    <audio src="/sounds/pacman-intro.mp3"  preload="auto" id="pacman-intro-audio"></audio>
+    <audio src="/sounds/pacman-intro.mp3" preload="auto" id="pacman-intro-audio"></audio>
     <audio src="/sounds/coin.mp3" preload="auto" id="coinSound"></audio>
     <audio src="/sounds/portal.mp3" preload="auto" id="portalSound"></audio>
     <audio src="/sounds/die.mp3" preload="auto" id="dieSound"></audio>
@@ -72,7 +70,9 @@
     <audio src="/sounds/sad.mp3" preload="auto" id="sad-audio"></audio>
     <audio src="/sounds/win.mp3" preload="auto" id="win-audio"></audio>
 
-    
+    <img style="display: none" src="/images/bomb.png" id="bomb-img">
+
+
 
 
 
@@ -82,25 +82,16 @@
             <div id="scoreBox">
                 <h3 id="scoreTitle">Score</h3>
                 <h1 id="score">0</h1>
-
                 <canvas id="livesCanvas"></canvas>
-
                 <h3 id="otherPlayer">Your Opponent</h3>
                 <h1 id="other-score">0</h1>
-
                 <canvas id="otherLivesCanvas"></canvas>
-
-
-
-
             </div>
         </div>
         <div class="flex-none" style="width: 800px">
-
             <canvas id="gameCanvas"></canvas>
         </div>
         <div>
-
             <div id="time-box">
                 <h3>Time Remaining</h3>
                 <h1 id="time-remaining"></h1>
@@ -108,15 +99,7 @@
         </div>
     </div>
 
-    <!-- <div id="demo-loop">
-        <canvas id="demo-loop-canvas">
-            
-        </canvas>
-    </div> -->
-
     <div id="game-over-display">
-
-
         <div id="you-win-panel" class="hide-by-default">
             <h1>You Win!</h1>
             <img src="/images/trophy.png">
@@ -133,8 +116,24 @@
             You lost. Better luck next time.
         </div>
 
-        <p style="text-align: left" class="data-label">Your Matches:</p>
-        <ul id="match-list"></ul>
+        <button id="show-my-matches-button" style="display: inline-block; border-radius:  6px 0 0 6px; border-right: 0" class="myButton selected">My Matches</button>
+        <button id="show-leader-board-button" style="display: inline-block; border-radius: 0 6px 6px 0" class="myButton">Leader Board</button>
+
+        <div id="my-matches-div" style="display: none">
+            <!-- <p style="text-align: left" class="data-label">Your Matches:</p> -->
+            <ul id="match-list"></ul>
+        </div>
+
+        <div id="leader-board-div" style="display: none">
+
+            <!-- <p style="text-align: left" class="data-label">Leader Board</p> -->
+
+            <div class="flex-container">
+                <div class="data-label" style="padding-left: 70px; text-align: left">Player</div>
+                <div style="text-align: right; padding-right: 30px" class="data-label">Score</div>
+            </div>
+            <ul id="leader-board"></ul>
+        </div>
 
         <a class="myButton" href="/">Play Again</a>
     </div>
@@ -152,6 +151,7 @@
     <script src="/javascript/Ghost.js"></script>
     <script src="/javascript/Sounds.js"></script>
     <script src="/javascript/PacMan.js"></script>
+    <script src="/javascript/bomb.js"></script>
     <script src="/javascript/Game.js"></script>
     <script src="/javascript/game-over.js"></script>
     <!-- <script src="/javascript/demo-loop.js"></script> -->
@@ -159,6 +159,15 @@
     <script type="text/template" id="match-result-item-template">
         <h3>vs {{opponentName}}</h3>
         <p>{{result}} {{yourScore}}:{{opponentScore}}</p>
+    </script>
+
+    <script type="text/template" id="leader-board-item">
+
+        <div class="flex-container">
+            <div><h3>{{player_name}}</h3></div>
+            <div style="text-align: right"><h3>{{score}}</h3></div>
+        </div>
+
     </script>
 </body>
 

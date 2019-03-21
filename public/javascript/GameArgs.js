@@ -68,6 +68,9 @@ gameArgs.randomFloat = function (min, max) {
 
 gameArgs.drawPolygon = function drawPolygon(ctx, center, radius, points, rotation, color) {
     // begin drawing
+    if(!ctx){
+        ctx = this.getContext();
+    }
     ctx.beginPath();
     if (!color)
         color = "#ffffff";
@@ -113,6 +116,14 @@ gameArgs.drawCrossCircle = function (ctx, center, radius) {
     ctx.stroke();
     ctx.strokeStyle = "#ffffff";
 };
+
+gameArgs.drawImage = function(image, dx, dy, ctx) {
+    if(!ctx) {
+        ctx = this.getContext();
+    }
+
+    ctx.drawImage(image,dx, dy);
+}
 
 gameArgs.drawPoints = function (points, center, rotation, color, ctx) {
     if (!ctx)
@@ -205,52 +216,6 @@ gameArgs.getContext = function () {
 
     return gameArgs.context;
 };
-
-gameArgs.drawLanderFlames = function (pt,
-   bottom,
-   left,
-   right) {
-    // simple point
-    var PT = { x: 0, y: 0 };
-
-    var iFlame = this.random(1, 3);  // so the flame flickers
-    var flamePoints = [];
-    if (bottom) {
-        flamePoints = [
-           new point(-5, -6), new point(0, -1), new point(3, -10),
-           new point(-3, -6), new point(-1, -2), new point(0, -15),
-           new point(2, -12), new point(1, 0), new point(6, -4)];
-
-    }
-
-    // right thrust
-    if (right) {
-        flamePoints = [
-           new point(10, 14), new point(8, 12), new point(12, 12),
-           new point(12, 10), new point(8, 10), new point(10, 8),
-           new point(14, 11), new point(14, 11), new point(14, 11),
-        ];
-
-    }
-
-    // left thrust
-    if (left) {
-        flamePoints = [
-           new point(-10, 14), new point(-8, 12), new point(-12, 12),
-           new point(-12, 10), new point(-8, 10), new point(-10, 8),
-           new point(-14, 11), new point(-14, 11), new point(-14, 11),
-        ];
-    }
-
-    for (var i = 0; i < flamePoints.length; i++) {
-        flamePoints[i].y += iFlame + pt.y;
-        flamePoints[i].x += pt.x;
-        flamePoints[i] = gameArgs.rotate(flamePoints[i], pt, 180);
-
-    }
-    //For the life of me, I can't get the flames to render entirely in red
-    this.fillPoints(flamePoints, "#ff0000");
-}
 
 $(function () {
     //Just create a new game object and let it do it's thing

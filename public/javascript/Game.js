@@ -14,6 +14,8 @@
     var gameTime = new Date();
     var gameOverShown = false;
     var playedEndOfGameWarning = false;
+    var bombs = [];
+    var lastBombGenerationTime;
 
     gameTime.setSeconds(gameTime.setSeconds() + gameDuration * 60);
     imgBackground.onload = function () {
@@ -1408,6 +1410,24 @@
         draw();
     }, 1000 / 40);
 
+    function generateBomb() {
+        console.log('im generating a bomb');
+        if (!window.isPlayer1) {
+            return;
+        }
+        var newBomb = new bomb(ctx);
+        newBomb.point = {
+            x: Math.random() * gameArgs.A_SCREEN_WIDTH,
+            y: Math.random() * gameArgs.A_SCREEN_HEIGHT,
+        }
+        newBomb.velocity = {
+            dx: Math.random() * 3 - (Math.random() * 2),
+            dy: Math.random() * 3 - (Math.random() * 2),
+        }
+        bombs.push(newBomb);
+        sendGameEvent('bomb-created', score, JSON.stringify(newBomb));
+    }
+
     function resetGame() {
         playingGame = true;
         resetBoard();
@@ -1423,6 +1443,25 @@
         gameOver = false;
         gameOverShown = false;
         playedEndOfGameWarning = false;
+
+        if (window.isPlayer1) {
+            // generateBomb();
+        } else {
+            window.receiveBomb = function (serverBomb) {
+                console.log('i received a bomb');
+                console.log(serverBomb);
+                var myBomb = new bomb(ctx);
+                myBomb.point = {
+                    x: serverBomb.point.x,
+                    y: serverBomb.point.y
+                };
+                myBomb.velocity = {
+                    dx: serverBomb.velocity.dx,
+                    dy: serverBomb.velocity.dy
+                };
+                bombs.push(myBomb);
+            }
+        }
     }
 
     window.resetGame = resetGame;
@@ -1434,6 +1473,13 @@
         if (eventArgs.description === 'Hit by Ghost') {
             numOfOtherLives--;
         }
+    }
+
+    window.opponentGotBomb = function () {
+        killPacMan();
+        bombs.forEach(function (myBomb) {
+            myBomb.kill();
+        });
     }
 
     $(document).keydown(function (event) {
@@ -1454,7 +1500,7 @@
                 // document.location.href = '/Games/GameMenu?timeout=' + getParameterByName('timeout');
                 break;
             default:
-                // console.log(event.which);
+
         }
     });
 
@@ -1574,6 +1620,25 @@
 
     var powerUpInterval = null;
 
+    function killPacMan() {
+        p.kill(numberOfLives > 0);
+        score -= 5000;
+        reportScore();
+        sendGameEvent('Hit by Ghost', score);
+        parent.postMessage('/quick-red-flash', '*');
+        numberOfLives--;
+        if (numberOfLives < 0) {
+            setTimeout(function () {
+                parent.postMessage('/cycle-wave', '*');
+                // document.location.href = '/Games/HighScore?game=PacMan&score=' + score;
+            }, 3000);
+            playingGame = false;
+            sendGameEvent('Game Over', score);
+        }
+
+        soundFx.playDie();
+    }
+
     function advance() {
         if (new Date() > gameTime) {
             // Game is over
@@ -1581,7 +1646,7 @@
             soundFx.pauseBgMusic();
             soundFx.pauseInvicibleMusic();
             gameOver = true;
-            if(!gameOverShown) {
+            if (!gameOverShown) {
                 gameOverShown = true;
                 gameOverController();
             }
@@ -1602,14 +1667,68 @@
                 height: 46
             });
         }
+
+        bombs.forEach(function (myBomb) {
+            rectanglesToClear.push({
+                x: myBomb.point.x - 1,
+                y: myBomb.point.y - 1,
+                width: 62,
+                height: 84,
+            });
+        })
+
         if (!playingGame)
             return;
 
+        if (bombs.length > 0) {
+            lastBombGenerationTime = null;
+        } else if (lastBombGenerationTime == null) {
+            lastBombGenerationTime = new Date();
+        }
+
+        if (lastBombGenerationTime) {
+            if ((new Date().getTime() - lastBombGenerationTime.getTime()) / 1000 > 30) {
+                generateBomb();
+            }
+        }
+
         p.advance();
+        bombs.forEach(function (myBomb) {
+
+            myBomb.advance();
+            if (myBomb.point.x > gameArgs.A_SCREEN_WIDTH || myBomb.point.y > gameArgs.A_SCREEN_HEIGHT || myBomb.x < 0 || myBomb.y < 0) {
+                bombs.splice(bombs.indexOf(myBomb), 1);
+            }
+            if (!myBomb.alive) {
+                bombs.splice(bombs.indexOf(myBomb), 1);
+            }
+        });
 
         for (var i = 0; i < ghosts.length; i++) {
             ghosts[i].advance();
         }
+
+        bombs.forEach(function (myBomb) {
+
+            if (myBomb.alive) {
+                var distanceOfPacManFromBomb = gameArgs.checkForCollision(p, myBomb);
+
+                if (distanceOfPacManFromBomb < 35) {
+
+                    myBomb.kill();
+                    bombs = [];
+                    webSocket.send(JSON.stringify({
+                        eventType: 'game-activity',
+                        matchId: window.match.id,
+                        playerId: window.player.id,
+                        description: 'bomb-retrieved',
+                        score: score,
+                    }));
+
+                }
+            }
+
+        });
 
         for (var i = 0; i < ghosts.length; i++) {
             var ghost = ghosts[i];
@@ -1623,22 +1742,7 @@
                     parent.postMessage('/quick-green-flash', '*');
                     soundFx.playGhostDie();
                 } else if (p.alive && !p.isDying && !p.invincible && !ghost.resetting) {
-                    p.kill(numberOfLives > 0);
-                    score -= 5000;
-                    reportScore();
-                    sendGameEvent('Hit by Ghost', score);
-                    parent.postMessage('/quick-red-flash', '*');
-                    numberOfLives--;
-                    if (numberOfLives < 0) {
-                        setTimeout(function () {
-                            parent.postMessage('/cycle-wave', '*');
-                            // document.location.href = '/Games/HighScore?game=PacMan&score=' + score;
-                        }, 3000);
-                        playingGame = false;
-                        sendGameEvent('Game Over', score);
-                    }
-
-                    soundFx.playDie();
+                    killPacMan();
                 }
             }
         }
@@ -1685,6 +1789,13 @@
                 if (distance < 35)
                     pills[i].pillDrawn = false;
             }
+            bombs.forEach(function (myBomb) {
+
+                var distanceFromBomb = gameArgs.checkForCollision(myBomb, pills[i]);
+                if (distanceFromBomb < 70) {
+                    pills[i].pillDrawn = false;
+                }
+            });
         }
 
         if (pills.length == 0) {
@@ -1704,13 +1815,13 @@
     var rectanglesToClear = [];
 
     function displayTimeRemaining() {
-        if(gameOver) {
+        if (gameOver) {
             return;
         }
         var now = new Date();
         let secondsLeft = (gameTime.getTime() - now.getTime()) / 1000;
         var under60 = secondsLeft < 60;
-        var under8= secondsLeft < 8;
+        var under8 = secondsLeft < 8;
 
         const minutes = Math.floor(secondsLeft / 60);
         secondsLeft = Math.floor(secondsLeft - (minutes * 60));
@@ -1724,9 +1835,9 @@
             document.getElementById('time-remaining').classList.remove('blink');
         }
 
-        if(under8 && !playedEndOfGameWarning) {
+        if (under8 && !playedEndOfGameWarning) {
             playedEndOfGameWarning = true;
-            console.log('playing scanner');
+
             soundFx.playScanner();
         }
 
@@ -1780,6 +1891,11 @@
                 pills[i].pillDrawn = true;
             }
         }
+        bombs.forEach(function (myBomb) {
+
+            myBomb.draw();
+
+        });
 
         for (var i = 0; i < ghosts.length; i++) {
             ghosts[i].draw();
@@ -1862,9 +1978,5 @@ if (getParameterByName('timeout')) {
         var secondsString = seconds.toString();
         if (secondsString.length == 1)
             secondsString = '0' + secondsString;
-
-
     }, 200);
-
-
 }
