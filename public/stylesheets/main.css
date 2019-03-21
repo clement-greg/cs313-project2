@@ -335,6 +335,17 @@ input {
 	animation: slide-in-from-bottom .5s ease-out;
 }
 
+#error-message {
+	display: none;
+	text-align: left;
+
+}
+
+#error-message.display {
+	display: block;
+	animation: slide-in-from-bottom .5s ease-out;
+}
+
 #v-v {
 	text-align: center;
     margin-left: 20px;

@@ -11,10 +11,14 @@ if (localStorage.getItem('player-info')) {
 }
 document.getElementById('register-button').addEventListener('click', function () {
 
+
+    var userName = document.getElementById('user-name').value;
+    if (!userName) {
+        showErrorMessage('Enter Your name');
+        return;
+    }
     document.getElementById('register-button').disabled = true;
     var api = apiService();
-    var userName = document.getElementById('user-name').value;
-
     player.name = userName;
 
 
@@ -108,7 +112,7 @@ function startWebSocket() {
                 } else if (messageObj.description === 'bomb-created') {
                     var bomb = JSON.parse(messageObj.meta);
                     window.receiveBomb(bomb);
-                } else if(messageObj.description === 'level-cleared'){
+                } else if (messageObj.description === 'level-cleared') {
                     window.showGameMessage('Opponent Cleared a level');
                 } else {
                     window.showOtherPlayerGameEvent(messageObj);
@@ -220,9 +224,28 @@ function uuidv4() {
     )
 }
 
+function updateRegisterButton(event) {
+    console.log(event);
+}
+
 window.showGameMessage = function (message) {
     console.log('fires');
     var messageDiv = document.getElementById('game-message');
+    messageDiv.innerHTML = message;
+    messageDiv.classList.remove('display');
+    setTimeout(() => {
+        messageDiv.classList.add('display');
+
+        setTimeout(() => {
+            messageDiv.classList.remove('display');
+        }, 10000);
+    });
+
+}
+
+showErrorMessage = function (message) {
+    console.log('fires');
+    var messageDiv = document.getElementById('error-message');
     messageDiv.innerHTML = message;
     messageDiv.classList.remove('display');
     setTimeout(() => {

@@ -1665,6 +1665,7 @@
         soundFx.playDie();
     }
 
+    ghostsKilled = 0;
     function advance() {
         if (new Date() > gameTime || (numberOfLives < 0 && numOfOtherLives < 0)) {
             // Game is over
@@ -1767,6 +1768,12 @@
                     ghost.startReset();
                     parent.postMessage('/quick-green-flash', '*');
                     soundFx.playGhostDie();
+                    
+                    ghostsKilled ++;
+                    if(ghostsKilled === 4) {
+                        score +=10000;
+                        window.showGameMessage('Ate All Ghosts Bonus!<br>+20000');
+                    }
                 } else if (p.alive && !p.isDying && !p.invincible && !ghost.resetting) {
                     killPacMan();
                 }
@@ -1788,6 +1795,7 @@
                     soundFx.playPowerUp();
                     powerUpInterval = setTimeout(function () {
 
+                        ghostsKilled = 0;
                         for (var j = 0; j < ghosts.length; j++) {
                             ghosts[j].eatable = false;
                             ghosts[j].eatableWaning = true;
@@ -1831,7 +1839,7 @@
             sendGameEvent('level-cleared', score, meta);
             score += 20000;
             reportScore();
-            ghostSpeed += 1;
+            // ghostSpeed += 1;
 
             parent.postMessage('/cycle-wave', '*');
         }
