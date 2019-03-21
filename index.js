@@ -29,27 +29,28 @@ const app = express()
     res.setHeader('Content-Type', 'application/json');
     db.getLeaderBoard(results => res.end(JSON.stringify(results)));
   })
-  .patch('/api/join-match/', (req, res) => {
-    const playerId = req.header('player-id');
+  // .patch('/api/join-match/', (req, res) => {
+  //   const playerId = req.header('player-id');
 
-    db.joinMatch(playerId, (match) => {
+  //   db.joinMatch(playerId, (match) => {
 
-      if (match.player_2 === playerId) {
-        Object.entries(connections).forEach(entry => {
-          const key = entry[0];
-          const value = entry[1];
 
-          if (key === match.player_1) {
-            value.send(JSON.stringify({
-              eventType: 'opponent-found',
-              opponentId: playerId
-            }));
-          }
-        });
-      }
-      res.end(match);
-    });
-  })
+  //     if (match.player_2 === playerId) {
+  //       Object.entries(connections).forEach(entry => {
+  //         const key = entry[0];
+  //         const value = entry[1];
+
+  //         if (key === match.player_1) {
+  //           value.send(JSON.stringify({
+  //             eventType: 'opponent-found',
+  //             opponentId: playerId
+  //           }));
+  //         }
+  //       });
+  //     }
+  //     res.end(match);
+  //   });
+  // })
   .get('/api/open-match', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     db.getOpenMatch(results => res.end(results));
@@ -60,21 +61,28 @@ const app = express()
     res.setHeader('Content-Type', 'application/json');
     db.savePlayer(player, match => {
       if (match.player_2 === player.id) {
-        Object.entries(connections).forEach(entry => {
-          const key = entry[0];
-          const value = entry[1];
-
-          if (key === match.player_1) {
-            try {
-              value.send(JSON.stringify({
-                eventType: 'opponent-found',
-                opponentId: player.id,
-              }));
-            } catch (e) {}
-          }
+        db.getPlayer(match.player_1, player1=> {
+          Object.entries(connections).forEach(entry => {
+            const key = entry[0];
+            const value = entry[1];
+  
+            if (key === match.player_1) {
+              try {
+                value.send(JSON.stringify({
+                  eventType: 'opponent-found',
+                  opponentId: player.id,
+                  opponentName: player.name,
+                }));
+              } catch (e) {}
+            }
+          });
+          match.opponent = player1.name;
+          res.end(JSON.stringify(match));
         });
+
+      } else {
+        res.end(JSON.stringify(match));
       }
-      res.end(JSON.stringify(match));
     });
   })
 

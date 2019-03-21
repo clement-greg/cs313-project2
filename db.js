@@ -13,6 +13,8 @@ module.exports.execute = function (query, parameters, callback) {
 
     pool.query(query, parameters, (error, results) => {
         if (error) {
+            console.log(query);
+            console.log(parameters);
             console.log(error);
             throw error
         }
@@ -66,6 +68,10 @@ module.exports.savePlayer = function (player, callback) {
         }
     });
 
+}
+
+module.exports.getPlayer = function(playerId, callback) {
+    this.execute('SELECT * FROM player where id = $1', [playerId], results=>callback(results[0]));
 }
 
 module.exports.saveScore = function (score, callback) {

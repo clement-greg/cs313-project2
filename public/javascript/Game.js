@@ -1411,10 +1411,10 @@
     }, 1000 / 40);
 
     function generateBomb() {
-        console.log('im generating a bomb');
         if (!window.isPlayer1) {
             return;
         }
+        console.log('im generating a bomb');
         var newBomb = new bomb(ctx);
         newBomb.point = {
             x: Math.random() * gameArgs.A_SCREEN_WIDTH,
@@ -1467,11 +1467,36 @@
     window.resetGame = resetGame;
     window.showOtherPlayerGameEvent = function (eventArgs) {
 
+
         if (eventArgs.score) {
+
+            var currentOtherScore = parseInt(document.getElementById('other-score').innerText);
+            var newOtherScore = parseInt(eventArgs.score);
+            var myScore = parseInt(score);
+
+            // console.log('currentScore: ' + currentOtherScore + ' newScore: ' + newOtherScore);
+            // console.log({
+            //     otherCurrentScore: currentOtherScore,
+            //     otherNewScore: newOtherScore,
+            //     yourScore: score,
+            // });
+            // console.log((currentOtherScore < myScore).toString() + ':' + (newOtherScore > myScore).toString());
+
+            if (currentOtherScore <= myScore && newOtherScore > myScore) {
+                // opponent winning
+                console.log('Loosing');
+                window.showGameMessage('Look out, your loosing!!');
+            } else if (currentOtherScore >= myScore && newOtherScore < myScore) {
+                console.log('wining');
+                window.showGameMessage('You pulled ahead!!');
+            }
             document.getElementById('other-score').innerText = eventArgs.score;
         }
         if (eventArgs.description === 'Hit by Ghost') {
             numOfOtherLives--;
+            if (numOfOtherLives < 0) {
+                window.showGameMessage('Your Opponent\'s game is over');
+            }
         }
     }
 
@@ -1480,6 +1505,7 @@
         bombs.forEach(function (myBomb) {
             myBomb.kill();
         });
+        window.showGameMessage('You were blown up.');
     }
 
     $(document).keydown(function (event) {
@@ -1640,7 +1666,7 @@
     }
 
     function advance() {
-        if (new Date() > gameTime) {
+        if (new Date() > gameTime || (numberOfLives < 0 && numOfOtherLives < 0)) {
             // Game is over
             playingGame = false;
             soundFx.pauseBgMusic();
@@ -1792,7 +1818,7 @@
             bombs.forEach(function (myBomb) {
 
                 var distanceFromBomb = gameArgs.checkForCollision(myBomb, pills[i]);
-                if (distanceFromBomb < 70) {
+                if (distanceFromBomb < 100) {
                     pills[i].pillDrawn = false;
                 }
             });
@@ -1801,7 +1827,12 @@
         if (pills.length == 0) {
             //Level cleared
             resetBoard();
+            window.showGameMessage('Level Cleared<br>Bonus20000');
+            sendGameEvent('level-cleared', score, meta);
+            score += 20000;
+            reportScore();
             ghostSpeed += 1;
+
             parent.postMessage('/cycle-wave', '*');
         }
     }
@@ -1809,7 +1840,16 @@
     var score = 0;
 
     function reportScore() {
+        var currentScore = parseInt(document.getElementById('score').innerHTML);
+        var currentOpponentScore = parseInt(document.getElementById('other-score').innerHTML);
+
         document.getElementById('score').innerHTML = score;
+
+        if (currentScore <= currentOpponentScore && score > currentOpponentScore) {
+            window.showGameMessage('You pulled ahead!!');
+        } else if (currentScore >= currentOpponentScore && score < currentOpponentScore) {
+            window.showGameMessage('Look out, your loosing!!');
+        }
     }
 
     var rectanglesToClear = [];

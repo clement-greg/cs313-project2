@@ -325,6 +325,22 @@ input {
 	color: rgb(0, 0, 255)
 }
 
+#game-message {
+	display: none;
+	text-align: center;
+}
+
+#game-message.display {
+	display: block;
+	animation: slide-in-from-bottom .5s ease-out;
+}
+
+#v-v {
+	text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
 @keyframes pan-out {
 	from {
 		transform: scale(1) translateX(0px);
@@ -341,6 +357,21 @@ input {
 	100% {
 		transform: scale(1.1) translateX(-2000px);
 	}
+}
+
+@keyframes slide-in-from-bottom {
+	from {
+		transform: scale(2) translateY(300px);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1) translateY(0px);
+		opacity: 1;
+	}
+}
+
+.slide-in-from-bottom {
+	animation: slide-in-from-bottom .5s ease-out;
 }
 
 @keyframes expand {
